@@ -36,10 +36,8 @@ def search_dependency(source, directory):
 def main():
     target_directory = "../Soup/soup/"
     target_file = "AnalogueKeyboard.cpp"
-
-    found = search_dependency(target_file, target_directory)
-    # print(res)
-    print("\n".join(found))
+    dependencies = search_dependency(target_file, target_directory)
+    print(";".join(dependencies),end="")
 
 
 if __name__ == "__main__":

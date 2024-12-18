@@ -12,10 +12,7 @@ _Disclaimer: I'm not familiar with C++ and was largely informed by LLM._
 
 `AnalogueKeyboardPy.pyd` was built for Python3.12 on Win11 with Visual Studio build tools
 
-```
-python tool/find_dep.py
-# manually add dependencies to CMakeLists
-
+```powershell
 cd build
 cmake .. -G "Visual Studio 17 2022" -A x64 -T v143,host=x64
 cmake --build . --config Release

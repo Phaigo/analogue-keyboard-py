@@ -15,41 +15,24 @@ list(APPEND CMAKE_PREFIX_PATH "${PYBIND11_CMAKE_DIR}")
 
 find_package(pybind11 REQUIRED)
 
+execute_process(
+    COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/tool/find_dep.py
+    OUTPUT_VARIABLE DEPENDENCY_LIST
+    ERROR_VARIABLE SCRIPT_ERROR
+    RESULT_VARIABLE SCRIPT_RESULT
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+if(NOT SCRIPT_RESULT EQUAL 0)
+    message(FATAL_ERROR "Python script failed: ${SCRIPT_ERROR}")
+endif()
+
 include_directories(../Soup/soup)
 
-add_library(AnalogueKeyboardPy SHARED
+add_library(AnalogueKeyboardPy
     AnalogueKeyboardPy.cpp
-    # ... add dependencies ...
-    ../Soup/soup/AnalogueKeyboard.cpp
-    ../Soup/soup/DigitalKeyboard.cpp
-    ../Soup/soup/Process.cpp
-    ../Soup/soup/string.cpp
-    ../Soup/soup/base.cpp
-    ../Soup/soup/hwHid.cpp
-    ../Soup/soup/Key.cpp
-    ../Soup/soup/HidReportDescriptor.cpp
-    ../Soup/soup/Reader.cpp
-    ../Soup/soup/ProcessHandle.cpp
-    ../Soup/soup/Range.cpp
-    ../Soup/soup/Regex.cpp
-    ../Soup/soup/os.cpp
-    ../Soup/soup/filesystem.cpp
-    ../Soup/soup/unicode.cpp
-    ../Soup/soup/SharedLibrary.cpp
-    ../Soup/soup/BitReader.cpp
-    ../Soup/soup/Module.cpp
-    ../Soup/soup/memGuard.cpp
-    ../Soup/soup/Pointer.cpp
-    ../Soup/soup/bitutil.cpp
-    ../Soup/soup/CpuInfo.cpp
-    ../Soup/soup/Pattern.cpp
-    ../Soup/soup/RegexGroup.cpp
-    ../Soup/soup/rand.cpp
-    ../Soup/soup/LcgRng.cpp
-    ../Soup/soup/memAllocator.cpp
-    ../Soup/soup/MemoryBuffer.cpp
-    ../Soup/soup/HardwareRng.cpp
-    ../Soup/soup/alloc.cpp
+    ${DEPENDENCY_LIST}
 )
 
 target_link_libraries(AnalogueKeyboardPy PRIVATE pybind11::module)
